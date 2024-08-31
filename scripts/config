@@ -1,22 +1,18 @@
 #!/bin/bash
-# In simple cases, you don't need a config script. 
+# In simple cases, you don't need a config script.
 
-# With a simple config_panel.toml, you can write in the app settings, in the 
+# With a simple config_panel.toml, you can write in the app settings, in the
+
 # upstream config file or replace complete files (logo ...) and restart services.
 
-# The config scripts allows you to go further, to handle specific cases 
+# The config scripts allows you to go further, to handle specific cases
+
 # (validation of several interdependent fields, specific getter/setter for a value,
 # display dynamic informations or choices, pre-loading of config type .cube... ).
 
-#=================================================
-# GENERIC STARTING
-#=================================================
-# IMPORT GENERIC HELPERS
-#=================================================
-
 source /usr/share/yunohost/helpers
 
-ynh_abort_if_errors
+#REMOVEME? ynh_abort_if_errors
 
 #=================================================
 # RETRIEVE ARGUMENTS
@@ -24,10 +20,10 @@ ynh_abort_if_errors
 
 final_path=$(ynh_app_setting_get $app final_path)
 
-
 get__instance_type() {
     if [ -f "$final_path/petrolette.config.json" ]
-    then 
+    then
+
         echo 1
     else
         echo 0
@@ -35,16 +31,15 @@ get__instance_type() {
 }
 
 set__instance_type() {
-    if [ "$instanceType" -eq 1 ] 
+    if [ "$instanceType" -eq 1 ]
+
     then
         echo '{  "instanceType" : "monoUser" }' > "$final_path/petrolette.config.json"
-        ynh_app_setting_set --app=$app --key=mono_user --value=1
+        ynh_app_setting_set --key=mono_user --value=1
     else
     rm "$final_path/petrolette.config.json"
-    ynh_app_setting_set --app=$app --key=mono_user --value=0
+    ynh_app_setting_set --key=mono_user --value=0
     fi
 }
-#=================================================
-# GENERIC FINALIZATION
 #=================================================
 ynh_app_config_run $1
